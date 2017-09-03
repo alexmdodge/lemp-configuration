@@ -24,9 +24,8 @@ fi
 root=${domain#*.}
 name=${domain%.*}
 
-
 # Confirm domain name and top level
-echo "The root of the domain is ($root), with a first level domain of ($name)"
+echo "The root of the domain is <$root>, with a first level domain of <$name>"
 echo "Is this the domain name correct? (y/n)"
 read -e check
 

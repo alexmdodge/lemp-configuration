@@ -4,7 +4,6 @@
 # with configuration for base WordPress requirements as
 # well as letsencrypt for certificate management
 
-cd ~
 apt-get update
 apt-get install -y nginx \
   mysql-server \
