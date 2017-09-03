@@ -15,10 +15,11 @@ apt-get install -y nginx \
 
 # Ensure public key available and entered in GitHub
 ssh-keygen
-echo "Copy the resulting key to nessary locations:"
+echo "Copy the resulting key to nessary locations :"
 cat ~/.ssh/id_rsa.pub
+echo ""
 
-# Configure default Nginx and PHP settings
+# Copy default configuration and settings
 sudo cp -R configuration/nginx-php-config/nginx /etc
 sudo cp -R configuration/nginx-php-config/php /etc
 

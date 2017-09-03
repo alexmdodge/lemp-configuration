@@ -34,7 +34,7 @@ read -e check
 if [ "$check" == y ] ; then
 
   # Change the full path domain name settings
-  sed "s/{DOMAIN.COM}/$domain/g" templates/domain-dev.conf > $domain.conf.tmp
+  sed "s/{DOMAIN.COM}/$domain/g" templates/single-instance.conf > $domain.conf.tmp
   mv $domain.conf.tmp $domain.conf
 
   # Change the partial domain settings (mostly log files)
