@@ -1,3 +1,9 @@
+#!/bin/bash
+
+# This config file is a complete LEMP stack installation
+# with configuration for base WordPress requirements as
+# well as letsencrypt for certificate management
+
 # Install initial LEMP packages
 cd ~
 apt-get update
@@ -6,11 +12,10 @@ apt-get install -y mysql-server php-fpm php-mysql php-gd php-dom
 
 # Ensure public key available and entered in GitHub
 ssh-keygen
-echo "Copy the resulting key to your preffered:"
+echo "Copy the resulting key to nessary locations:"
 cat ~/.ssh/id_rsa.pub
 
 # Configure default Nginx and PHP settings
-git clone git@github.com:alexmdodge/nginx-php-config.git
 sudo cp -R ./nginx-php-config/nginx /etc
 sudo cp -R ./nginx-php-config/php /etc
 
@@ -24,5 +29,7 @@ add-apt-repository ppa:certbot/certbot
 apt-get update
 apt-get install python-certbot-nginx
 
-echo "When sites added, run the following command:"
-echo "sudo certbot --nginx" 
+
+echo "- - - - - - - - Instance Configured - - - - - - - -"
+echo "To setup a site run the creator script, then run certbot to add ssl"
+echo "sudo certbot --nginx"
