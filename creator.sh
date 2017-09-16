@@ -1,5 +1,10 @@
 #!/bin/bash
 
+##
+# A CLI for inputting new site information and creating base
+# configuration files from the templates.
+##
+
 echo "- - - - - - Starting Config Creator - - - - - - -"
 
 # Get the full domain of new site and copy location

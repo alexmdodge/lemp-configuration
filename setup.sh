@@ -1,8 +1,10 @@
 #!/bin/bash
 
+##
 # This config file is a complete LEMP stack installation
 # with configuration for base WordPress requirements as
 # well as letsencrypt for certificate management
+##
 
 apt-get update
 apt-get install -y nginx \
@@ -12,7 +14,9 @@ apt-get install -y nginx \
   php-gd \
   php-dom
 
-# Ensure public key available and entered in GitHub
+# Ensure public key available and entered in any version
+# control system which the instance would require read/write
+# access to
 ssh-keygen
 echo "Copy the resulting key to nessary locations :"
 cat ~/.ssh/id_rsa.pub

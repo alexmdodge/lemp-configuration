@@ -1,7 +1,33 @@
-# Welcome to REDspace's standardized Nginx and PHP-FPM config
-## Check this repo out to your servers etc directory and edit the required files
-***
+# Base LEMP Stack Configuration and Tooling
+This stack is meant to simplify instance creation with a base
+set of approved
 
+# Server Setup
+First instantiate a server instance however you like. Clone this repository
+to your local computer then use the `sync` command script.
+
+This will upload and unpack the zip file which contains all of the tooling. Note
+you also have access to the tooling unzipped. If you would like to edit and re-pack
+use the `build` script, which simply wraps everything up in a new tar ball.
+
+**Note** that once the file is uploaded you may need to set or change permissions
+on the scripts. In the `lemp-instance-config` directory you can run the following
+commands,
+
+(Confirm this section)
+```sh
+chown -R yourusername:yourusername .
+chmod 755 -R .
+```
+
+# Configuration
+Begin by running the server installation script,
+
+```
+./setup.sh
+```
+
+-----------
 Start by copying the main site config for your sites environment.
 For dev environments where you need to configure HTTPS on your local machine:
 ```sh
