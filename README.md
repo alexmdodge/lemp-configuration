@@ -1,6 +1,7 @@
 # Base LEMP Stack Configuration and Tooling
-This stack is meant to simplify instance creation with a base
-set of approved
+This LEMP tool is designed to simplify the creation of a basic web server
+with secure HTTPS as well as other secure features. Primarily intended for
+use in an AWS setting, but applicable anywhere.
 
 # Server Setup
 First instantiate a server instance however you like. Clone this repository
@@ -97,19 +98,6 @@ Create the key and certificates:
 ```sh
 $ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
 ```
-
-
-you'll be asked a number of questions:
-
-        Country Name (2 letter code) [AU]:CA
-        State or Province Name (full name) [Some-State]:Nova Scotia
-        Locality Name (eg, city) []:Bedford
-        Organization Name (eg, company) [Internet Widgits Pty Ltd]:REDspace Inc.
-        Organizational Unit Name (eg, section) []:Systems Management
-        Common Name (e.g. server FQDN or YOUR name) []:your_domain.com
-        Email Address []:admin@your_domain.com
-
-
 
 If you want to use letsencrypt, consult letsencrypt docs for it's config if going that route
 ```sh
