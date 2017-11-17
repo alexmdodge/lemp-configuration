@@ -23,8 +23,8 @@ cat ~/.ssh/id_rsa.pub
 echo ""
 
 # Copy default configuration and settings
-sudo cp -R configuration/nginx-php-config/nginx /etc
-sudo cp -R configuration/nginx-php-config/php /etc
+sudo cp -R configuration/nginx /etc
+sudo cp -R configuration/php /etc
 
 # Ensure database settings are secure
 mysql_secure_installation
