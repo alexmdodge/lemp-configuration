@@ -11,23 +11,13 @@ echo "- - - - - - Starting Config Creator - - - - - - -"
 echo "Enter the full domain of your new site: "
 read -e domain
 
-# Check copy location
-echo "Would like to copy your config to the default? (y/n) :"
-echo "/etc/nginx/sites-available"
-read -e location
-
-# Set default file location path
-path="/etc/nginx/sites-available"
-
-if [ "$location" != y ] ; then
-  echo "Enter a new location for the conf to be copied (ensure relative end with slash):"
-  read -e path
-  echo "New path set =>  $path"
-fi
-
 # Match from the front with % and the back with #
 root=${domain#*.}
 name=${domain%.*}
+
+# Set default file location to available and enabled
+sites_available="/etc/nginx/sites-available"
+sites_enabled="/etc/nginx/sites-enabled"
 
 # Confirm domain name and top level
 echo "The root of the domain is <$root>, with a first level domain of <$name>"
@@ -38,7 +28,7 @@ read -e check
 if [ "$check" == y ] ; then
 
   # Change the full path domain name settings
-  sed "s/{DOMAIN.COM}/$domain/g" templates/single-instance.conf > $domain.conf.tmp
+  sed "s/{DOMAIN.COM}/$domain/g" templates/domain.conf > $domain.conf.tmp
   mv $domain.conf.tmp $domain.conf
 
   # Change the partial domain settings (mostly log files)
@@ -46,11 +36,16 @@ if [ "$check" == y ] ; then
   mv $domain.conf.tmp $domain.conf
 
   # Move the conf file to the desired location
-  sudo mv $domain.conf $path
+  sudo mv $domain.conf $sites_available
 
   # Also create site folder in root directory with test page
-  sudo mkdir -p /var/www/$domain
-  sudo cp templates/index.php /var/www/$domain
+  mkdir -p /var/www/$domain
+  cp templates/index.php /var/www/$domain
+
+  # Enable the site by moving it to the enabled folder
+  cd $sites_enabled
+  ln -s ../$sites_available/$domain.conf .
+
   exit
 fi
 

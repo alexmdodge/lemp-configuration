@@ -1,71 +1,68 @@
 # Base LEMP Stack Configuration and Tooling
-This LEMP tool is designed to simplify the creation of a basic web server
+This LEMP configuration is designed to simplify the creation of a basic web server
 with secure HTTPS as well as other secure features. Primarily intended for
-use in an AWS setting, but applicable anywhere.
+use in an AWS setting, but applicable anywhere. It also comes bundled with a
+couple of tools to help with configuring different aspects of the stack.
 
 # Server Setup
-First instantiate a server instance however you like. Clone this repository
-to your local computer then use the `sync` command script.
+First spin up a server instance however you like. You will need access to the
+command line. Some shared services do not allow this which is why AWS and Digital Ocean are convenient. SSH into the serve then,
 
-This will upload and unpack the zip file which contains all of the tooling. Note
-you also have access to the tooling unzipped. If you would like to edit and re-pack
-use the `build` script, which simply wraps everything up in a new tar ball.
+```sh
+wget https://github.com/alexmdodge/lemp-instance-config/raw/master/lemp-instance-config.tar.gz
+tar -xzf lemp-instance-config.tar.gz
+```
+
+This will download and unpack the tar file which contains all of the tooling.
+
+If you would like to edit and re-pack the configuration, or if you're contributing
+you can use,
+
+```sh
+./build.sh
+```
+which simply wraps everything up in a new tar ball.
 
 **Note** that once the file is uploaded you may need to set or change permissions
 on the scripts. In the `lemp-instance-config` directory you can run the following
 commands,
 
-(Confirm this section)
-```sh
-chown -R yourusername:yourusername .
-chmod 755 -R .
-```
-
-# Configuration
+# Setup
 Begin by running the server installation script,
 
-```
+```sh
 ./setup.sh
 ```
+This will configure,
+* Nginx
+* PHP-FPM
+* Default webserver settings
+* Install `letsencrypt`
+* Prepare server to add individual site instances
 
------------
-Start by copying the main site config for your sites environment.
-For dev environments where you need to configure HTTPS on your local machine:
+# Create
+Once you have successfully setup the site you should be able to visit the
+public ip address and see a welcome page which has a title and shows information
+about the php configuration.
+
+Note that later on once another site is created with public page will be
+removed as it is not fit for public facing production instances.
+
+Before you begin make sure you have the domain name setup. This can be done
+through any third party, or through Amazon Route 53. To begin the creation
+script run,
+
 ```sh
-$ cp /etc/nginx/sites-availiable/domain-dev.conf /etc/nginx/sites-availiable/your-domain.conf && vi /etc/nginx/sites-availiable/your-domain.conf
-```
-For any environment where SSL is being terminated at a load balancer, edit this config:
-```sh
-$ cp /etc/nginx/sites-availiable/domain-aws.conf /etc/nginx/sites-availiable/your-domain.conf && vi /etc/nginx/sites-availiable/your-domain.conf
-```
-
-Change where domain is specified in the config file, both for server name and log files.
-
-
-Finally, link your new config file into the enabled sites config:
-```sh
-$ cd /etc/nginx/sites-enabled && ln -s ../sites-availiable/your-domain.conf .
-```
-
-Edit the following file if you need to add any custom location blocks, to handle specific paths for your site
-In general, the standard config will serve standard Drupal and Wordpress sites without much configuration
-```sh
-$ vi /etc/nginx/includes/custom_paths.conf
+./creator.sh
 ```
 
-
-Create a directory for PHP-FPM to log to and set it's permissions:
-```sh
-$ mkdir /var/log/php-fpm && chown www-data:adm /var/log/php-fpm
-```
-
+This will walk you through all the necessary steps. After the site configuration
+is successfully in place
 
 Edit the logrotate script for php-fpm to include the new directory:
-```sh        
+```sh     
 $ vi /etc/logrotate.d/php7.0-fpm
 ```
-
-
 Config should look like:
         
         /var/log/php7.0-fpm.log /var/log/php-fpm/*.log {
@@ -81,39 +78,4 @@ Config should look like:
                 endscript
         }
 
-PHP-FPM might not auto-create the error log for your pool, so just in case:
-```sh
-$ touch /var/log/php-fpm/prod_error.log && chown www-data:adm /var/log/php-fpm/prod_error.log
-```
-
-
 For local dev or single-instance environments (when a load balancer is not terminating SSL)
-Create your SSL certificates for Nginx to use.  First create the directory:
-```sh
-$ mkdir /etc/nginx/ssl
-```
-
-
-Create the key and certificates:
-```sh
-$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
-```
-
-If you want to use letsencrypt, consult letsencrypt docs for it's config if going that route
-```sh
-$ letsencrypt certonly -a webroot --webroot-path=/var/www/domain.com -d domain.com -d www.domain.com
-```
-
-Once the certificates are created, edit the associated sections in your sites conf file from earlier
-
-
-Test the conf file
-```sh
-$ nginx -t
-```
-
-
-Restart php-fpm and nginx when ready to launch
-```sh
-$ service php7.0-fpm restart && service nginx restart
-```
