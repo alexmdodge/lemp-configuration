@@ -18,9 +18,6 @@ apt-get install -y nginx \
 # control system which the instance would require read/write
 # access to
 ssh-keygen
-echo "Copy the resulting key to nessary locations :"
-cat ~/.ssh/id_rsa.pub
-echo ""
 
 # Copy default configuration and settings
 sudo cp -R configuration/nginx /etc
@@ -40,3 +37,7 @@ apt-get install python-certbot-nginx
 echo "- - - - - - - - Instance Configured - - - - - - - -"
 echo "To setup a site run the creator script, then run certbot to add ssl"
 echo "sudo certbot --nginx"
+
+echo "Copy the resulting SSH key to nessary locations :"
+cat ~/.ssh/id_rsa.pub
+echo ""

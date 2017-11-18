@@ -1,4 +1,4 @@
 <?php
 
-echo '<h1> Site Root </h1>'
+echo '<h1> LEMP Instance </h1>'
 phpinfo();
