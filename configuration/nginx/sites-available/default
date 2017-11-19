@@ -1,11 +1,11 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                                                     #
-# Base default override when the script is first      #
-# loaded onto the server. Note that this file is not  #
-# recommended for extended site uses and should be    #
-# replaced using the site creator                     #
-#                                                     #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                       #
+#   Base default override when the script is first      #
+#   loaded onto the server. Note that this file is not  #
+#   recommended for extended site uses and should be    #
+#   replaced using the site creator                     #
+#                                                       #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 server {
         # This will always be the fallback for no host request match
