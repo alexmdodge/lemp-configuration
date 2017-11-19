@@ -15,8 +15,14 @@ echo "Enter the full domain of your new site: "
 read -e domain
 
 # Match from the front with % and the back with #
-root=${domain#*.}
-name=${domain%.*}
+name=$(echo $domain | rev | cut -d"." -f2-  | rev)
+root=$(echo $domain | rev | cut -d"." -f1  | rev)
+
+# Check if www in domain and exit
+if [[ $domain == *"www."* ]]; then
+  echo "Please enter the domain without the www."
+  exit
+fi
 
 # Set default file nginx location for available and enabled sites
 sites_available="/etc/nginx/sites-available"

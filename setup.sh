@@ -22,8 +22,8 @@ index_template="templates/index.php"
 # Note this may not cover all use cases and extra packages
 # may be installed as required.
 printf "[LEMP Config] Installing required packages \n"
-apt-get update
-apt-get install -y nginx \
+sudo apt-get update
+sudo apt-get install -y nginx \
   mysql-server \
   php-fpm \
   php-mysql \
@@ -47,11 +47,11 @@ sudo touch /var/log/php-fpm/prod_error.log
 sudo cp $logrotate_config /etc/logrotate.d/php7.0-fpm
 
 printf "[LEMP Config] Installing letsencrypt \n"
-apt-get update
-apt-get install software-properties-common
-add-apt-repository ppa:certbot/certbot
-apt-get update
-apt-get install python-certbot-nginx
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python-certbot-nginx
 
 # Add useful aliases for manipulating server
 cd ~
@@ -76,8 +76,8 @@ chown -R $USER:www-data /etc/logrotate.d/
 
 printf "[LEMP Config] Checking configuration and restarting services \n"
 sudo nginx -t
-sudo service php7.0-fpm restart
 sudo service nginx restart
+sudo service php7.0-fpm restarts
 
 printf "- - - - - - LEMP Configuration Complete - - - - - - \n"
 printf "To initialize a site run the creator script. \n"
