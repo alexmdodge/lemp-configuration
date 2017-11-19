@@ -13,7 +13,7 @@ apt-get install wget
 ```
 
 ```sh
-wget https://github.com/alexmdodge/lemp-instance-config/raw/master/lemp-instance-config.tar.gz
+wget https://github.com/alexmdodge/lemp-configuration/raw/master/lemp-configuration.tar.gz
 tar -xzf lemp-instance-config.tar.gz
 ```
 
