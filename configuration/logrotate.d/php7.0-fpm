@@ -4,7 +4,7 @@
         missingok
         notifempty
         compress
-        create 0750 www-data adm
+        create 0750 www-data www-data
         delaycompress
         postrotate
                 /usr/lib/php/php7.0-fpm-reopenlogs

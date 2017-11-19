@@ -1,4 +1,4 @@
-# Base LEMP Stack Configuration and Tooling
+# LEMP Stack Configuration and Tooling
 This LEMP configuration is designed to simplify the creation of a basic web server
 with secure HTTPS as well as other secure features. Primarily intended for
 use in an AWS setting, but applicable anywhere. It also comes bundled with a
@@ -9,12 +9,15 @@ First spin up a server instance however you like. You will need access to the
 command line. Some shared services do not allow this which is why AWS and Digital Ocean are convenient. SSH into the server then ensure you have `wget` installed,
 
 ```sh
-apt-get install wget
+wget https://github.com/alexmdodge/lemp-configuration/raw/master/lemp-configuration.tar.gz
+ && tar -xzf lemp-configuration.tar.gz
 ```
 
+Once it's downloaded ensure that the permissions are updated for the tools,
+
 ```sh
-wget https://github.com/alexmdodge/lemp-configuration/raw/master/lemp-configuration.tar.gz
-tar -xzf lemp-instance-config.tar.gz
+sudo chown -R www-data:$USER lemp-configuration
+sudo chmod -R www-data:$USER lemp-configuration
 ```
 
 This will download and unpack the tar file which contains all of the tooling.

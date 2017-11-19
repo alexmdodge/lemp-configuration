@@ -34,14 +34,14 @@ sudo cp -R $php_config /etc
 sudo cp $index_template /var/www/html
 
 # Create SSL certificates directory
-mkdir /etc/nginx/ssl
+sudo mkdir /etc/nginx/ssl
 
 # Generate a public key
 ssh-keygen
 
 # Configure initial directories for logging
-mkdir /var/log/php-fpm
-touch /var/log/php-fpm/prod_error.log
+sudo mkdir /var/log/php-fpm
+sudo touch /var/log/php-fpm/prod_error.log
 
 # Update permissions for the directory
 chown -R www-data:$USER /var/log/php-fpm
@@ -58,6 +58,8 @@ apt-get install software-properties-common
 add-apt-repository ppa:certbot/certbot
 apt-get update
 apt-get install python-certbot-nginx
+
+# Setup permissions for all newly created directories
 
 echo "[LEMP Config] Checking configuration and restarting services"
 sudo nginx -t
