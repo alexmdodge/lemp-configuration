@@ -18,7 +18,7 @@ index_template="templates/index.php"
 # Install essential packages required a common LEMP stack
 # Note this may not cover all use cases and extra packages
 # may be installed as required.
-echo "[LEMP Config] Installing required packages"
+printf "[LEMP Config] Installing required packages"
 apt-get update
 apt-get install -y nginx \
   mysql-server \
@@ -28,7 +28,7 @@ apt-get install -y nginx \
   php-dom
 
 # Copy default configuration and settings
-echo "[LEMP Config] Copying base configuration files"
+printf "[LEMP Config] Copying base configuration files"
 sudo cp -R $nginx_config /etc
 sudo cp -R $php_config /etc
 sudo cp $index_template /var/www/html
@@ -52,7 +52,7 @@ sudo cp $logrotate_config /etc/logrotate.d/php7.0-fpm
 # Ensure database settings are secure
 mysql_secure_installation
 
-echo "[LEMP Config] Installing letsencrypt"
+printf "[LEMP Config] Installing letsencrypt"
 apt-get update
 apt-get install software-properties-common
 add-apt-repository ppa:certbot/certbot
@@ -61,15 +61,26 @@ apt-get install python-certbot-nginx
 
 # Setup permissions for all newly created directories
 
-echo "[LEMP Config] Checking configuration and restarting services"
+# Add useful aliases for manipulating server
+cd ~
+php="php7.0-fpm"
+start="alias lemp-start=\"sudo service nginx start && sudo service $php start\""
+stop="alias lemp-stop=\"sudo service nginx stop && sudo service $php stop\""
+restart="alias lemp-restart=\"sudo service nginx restart && sudo service $php restart\""
+test="alias lemp-test=\"sudo nginx -t && sudo service $php test\""
+
+printf "$start \n $stop \n $restart \n $test \n" >> .bashrc
+source ~/.bashrc
+
+printf "[LEMP Config] Checking configuration and restarting services"
 sudo nginx -t
 sudo service php7.0-fpm restart
 sudo service nginx restart
 
-echo "- - - - - - LEMP Configuration Complete - - - - - -"
-echo "To initialize a site run the creator script."
+printf "- - - - - - LEMP Configuration Complete - - - - - -"
+printf "To initialize a site run the creator script."
 
 # Expose generated public key for authentication uses
-echo "Copy the resulting SSH key to nessary locations (GitHub etc.) :"
+printf "Copy the resulting SSH key to nessary locations (GitHub etc.) :"
 cat ~/.ssh/id_rsa.pub
-echo ""
+printf ""

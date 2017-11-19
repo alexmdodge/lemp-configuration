@@ -25,12 +25,13 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
+            align-items: center;
             margin: 1rem;
             width: 100%;
         }
 
         .title {
-            font-size: 2rem;
+            font-size: 4rem;
             margin: 1rem;
         }
 
