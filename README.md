@@ -10,14 +10,7 @@ command line. Some shared services do not allow this which is why AWS and Digita
 
 ```sh
 wget https://github.com/alexmdodge/lemp-configuration/raw/master/lemp-configuration.tar.gz
- && tar -xzf lemp-configuration.tar.gz
-```
-
-Once it's downloaded ensure that the permissions are updated for the tools,
-
-```sh
-sudo chown -R www-data:$USER lemp-configuration
-sudo chmod -R www-data:$USER lemp-configuration
+tar -xzf lemp-configuration.tar.gz
 ```
 
 This will download and unpack the tar file which contains all of the tooling.
@@ -34,7 +27,7 @@ which simply wraps everything up in a new tar ball.
 Begin by running the server installation script,
 
 ```sh
-./setup.sh
+sudo ./setup.sh
 ```
 This will configure,
 * Nginx

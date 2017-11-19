@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet">
 
     <style>
-        body {
+        html body {
             font-size: 16px;
             font-family: 'Roboto', sans-serif;
         }
@@ -55,7 +55,7 @@
         <h1 class="title"> 
             - LEMP Webserver -
         </h1>
-        <a href="/" class="contribute">
+        <a href="https://github.com/alexmdodge/lemp-configuration" class="contribute">
             Help make this configuration better!
         </a>
     </div>

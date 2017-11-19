@@ -9,16 +9,19 @@
 #                                                             #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Setup initial user and group structure
+sudo usermod -a -G www-data $USER
+
 # Base setup variables including common locations and filepaths
 nginx_config="configuration/nginx"
-php_config="configuration/nginx"
+php_config="configuration/php"
 logrotate_config="configuration/logrotate.d/php7.0-fpm"
 index_template="templates/index.php"
 
 # Install essential packages required a common LEMP stack
 # Note this may not cover all use cases and extra packages
 # may be installed as required.
-printf "[LEMP Config] Installing required packages"
+printf "[LEMP Config] Installing required packages \n"
 apt-get update
 apt-get install -y nginx \
   mysql-server \
@@ -27,60 +30,54 @@ apt-get install -y nginx \
   php-gd \
   php-dom
 
+# Ensure database settings are secure
+mysql_secure_installation
+
 # Copy default configuration and settings
-printf "[LEMP Config] Copying base configuration files"
+printf "[LEMP Config] Copying base configuration files \n"
 sudo cp -R $nginx_config /etc
 sudo cp -R $php_config /etc
 sudo cp $index_template /var/www/html
-
-# Create SSL certificates directory
-sudo mkdir /etc/nginx/ssl
-
-# Generate a public key
-ssh-keygen
 
 # Configure initial directories for logging
 sudo mkdir /var/log/php-fpm
 sudo touch /var/log/php-fpm/prod_error.log
 
-# Update permissions for the directory
-chown -R www-data:$USER /var/log/php-fpm
-
 # Update logrotate configuration
 sudo cp $logrotate_config /etc/logrotate.d/php7.0-fpm
 
-# Ensure database settings are secure
-mysql_secure_installation
-
-printf "[LEMP Config] Installing letsencrypt"
+printf "[LEMP Config] Installing letsencrypt \n"
 apt-get update
 apt-get install software-properties-common
 add-apt-repository ppa:certbot/certbot
 apt-get update
 apt-get install python-certbot-nginx
 
-# Setup permissions for all newly created directories
-
 # Add useful aliases for manipulating server
 cd ~
 php="php7.0-fpm"
-start="alias lemp-start=\"sudo service nginx start && sudo service $php start\""
-stop="alias lemp-stop=\"sudo service nginx stop && sudo service $php stop\""
-restart="alias lemp-restart=\"sudo service nginx restart && sudo service $php restart\""
-test="alias lemp-test=\"sudo nginx -t && sudo service $php test\""
+prefix="sudo service"
 
-printf "$start \n $stop \n $restart \n $test \n" >> .bashrc
+start="alias lemp-start=\"$prefix nginx start && $prefix $php start\""
+stop="alias lemp-stop=\"$prefix nginx stop && $prefix $php stop\""
+restart="alias lemp-restart=\"$prefix nginx restart && $prefix $php restart\""
+status="alias lemp-status=\"$prefix nginx status && $prefix $php status\""
+test="alias lemp-test=\"sudo nginx -t\""
+
+printf "$start \n $stop \n $restart \n $status \n $test \n" >> .bashrc
 source ~/.bashrc
 
-printf "[LEMP Config] Checking configuration and restarting services"
+# Update all final permissions before restart
+chown -R $USER:www-data /var/log/
+chown -R $USER:www-data /var/www/
+chown -R $USER:www-data /etc/nginx/
+chown -R $USER:www-data /etc/php/
+chown -R $USER:www-data /etc/logrotate.d/
+
+printf "[LEMP Config] Checking configuration and restarting services \n"
 sudo nginx -t
 sudo service php7.0-fpm restart
 sudo service nginx restart
 
-printf "- - - - - - LEMP Configuration Complete - - - - - -"
-printf "To initialize a site run the creator script."
-
-# Expose generated public key for authentication uses
-printf "Copy the resulting SSH key to nessary locations (GitHub etc.) :"
-cat ~/.ssh/id_rsa.pub
-printf ""
+printf "- - - - - - LEMP Configuration Complete - - - - - - \n"
+printf "To initialize a site run the creator script. \n"
