@@ -53,11 +53,12 @@ sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
 sudo apt-get install python-certbot-nginx
 
-# Add useful aliases for manipulating server
+# Change directories and setup some convenience variables
 cd ~
 php="php7.0-fpm"
 prefix="sudo service"
 
+# Add useful aliases for manipulating server
 start="alias lemp-start=\"$prefix nginx start && $prefix $php start\""
 stop="alias lemp-stop=\"$prefix nginx stop && $prefix $php stop\""
 restart="alias lemp-restart=\"$prefix nginx restart && $prefix $php restart\""
@@ -79,5 +80,5 @@ sudo nginx -t
 sudo service nginx restart
 sudo service php7.0-fpm restarts
 
-printf "- - - - - - LEMP Configuration Complete - - - - - - \n"
 printf "To initialize a site run the creator script. \n"
+printf "- - - - - - LEMP Configuration Complete - - - - - - \n"

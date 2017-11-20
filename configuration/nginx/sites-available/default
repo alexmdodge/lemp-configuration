@@ -8,38 +8,41 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 server {
-        # This will always be the fallback for no host request match
-        listen 80 default_server;
-        listen [::]:80 default_server;
+    # This will always be the fallback for no host request match
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-        root /var/www/html;
+    root /var/www/html;
 
-        # Index file priority
-        index index.php index.html index.htm;
+    # Index file priority
+    index index.php index.html index.htm;
 
-        server_name _;
+    server_name _;
 
-        # Try file, then folder, then index.php
-        location / {
-                try_files $uri $uri/ /index.php?$args;
+    # Try file, then folder, then index.php
+    location / {
+            try_files $uri $uri/ /index.php?$args;
+    }
+
+    # Our externally defined restrictions
+    include /etc/nginx/includes/restrictions.conf;
+
+    # Pass PHP requests onto PHP-FPM
+    location ~ '\.php$' {
+        fastcgi_split_path_info ^(.+?\.php)(|/.*)$;
+
+        if (!-f $document_root$fastcgi_script_name) {
+                return 404;
         }
 
-        # Our externally defined restrictions
-        include /etc/nginx/includes/restrictions.conf;
+        # Include recommended fastcgi configuration
+        include /etc/nginx/fastcgi_params;
 
-        # Pass PHP requests onto PHP-FPM
-        location ~ '\.php$' {
-                fastcgi_split_path_info ^(.+?\.php)(|/.*)$;
-                if (!-f $document_root$fastcgi_script_name) {
-                        return 404;
-                }
-                include /etc/nginx/fastcgi_params;
-
-                # Block httpoxy attacks. See https://httpoxy.org/.
-                fastcgi_param HTTP_PROXY "";
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                fastcgi_param PATH_INFO $fastcgi_path_info;
-                fastcgi_intercept_errors on;
-                fastcgi_pass php;
-        }
+        # Block httpoxy attacks. See https://httpoxy.org/.
+        fastcgi_param HTTP_PROXY "";
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_intercept_errors on;
+        fastcgi_pass php;
+    }
 }
