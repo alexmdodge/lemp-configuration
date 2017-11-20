@@ -36,7 +36,8 @@ echo "Is this the domain name correct? (y/n)"
 read -e check
 
 # Check if domain correct then replace files
-if [ "$check" == y ] ; then
+if [ "$check" == y ] ;
+then
 
     # Change the full path domain name settings
     sed "s/{DOMAIN.COM}/$domain/g" templates/domain.conf > $domain.conf.tmp
@@ -48,6 +49,7 @@ if [ "$check" == y ] ; then
 
     # Move the conf file to the desired location
     mv $domain.conf $sites_available
+    cp $sites_available/$domain.conf $sites_available/$domain.conf-copy
 
     # Also create site folder in root directory with test page
     mkdir -p /var/www/$domain

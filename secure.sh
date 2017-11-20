@@ -11,14 +11,10 @@
 flag="$1"
 is_subdomain=false
 
-if [ $flag == "--sub-domain"  ]
+if [ "$flag" == "--sub-domain"  ]
 then
     is_subdomain=true
-    printf "[Secure Site] When configuring the site as a subdomain \
-            a certificate will not be generated for the default subdomain
-            www.
-            
-            Continue securing as a sub-domain (y/n)?\n"
+    printf "[Secure Site] When configuring the site as a subdomain a certificate will not be generated for the default subdomain www.\n Continue securing as a sub-domain (y/n)?\n"
     read -e use_subdomain
 
     if [ $use_subdomain != y ]
@@ -29,12 +25,12 @@ then
 fi
 
 # Get the full domain of site to secure
-printf "Enter the full domain of your new site: "
+printf "Enter the full domain of your new site: \n"
 read -e domain
 
 # Check if www in domain and exit
 if [[ $domain == *"www."* ]]; then
-    printf "Please enter the domain without the www."
+    printf "Please enter the domain without the www.\n"
     exit
 fi
 
@@ -43,7 +39,7 @@ domain_root="/var/www/$domain"
 # Check if domain exists and then build cert
 if [ ! -d "$domain_root" ]
 then
-	printf "$domain directory not found, please try again."
+	printf "$domain directory not found, please try again.\n"
     exit
 fi
 
@@ -56,9 +52,9 @@ else
 fi
 
 # Replace the current domains config certs with the newly generated ones
+cert="$domain.cert"
 config="/etc/nginx/sites-available/$domain.conf"
 temp_config="/etc/nginx/sites-available/$domain.conf.tmp"
-cert="/etc/letsencrypt/live/$domain"
 
 sed "s/{DOMAIN.CERT}/$cert/g" $config > $temp_config
 mv $temp_config $config
