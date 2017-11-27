@@ -52,8 +52,11 @@ else
 fi
 
 # Replace the current domains config certs with the newly generated ones
-public_cert="/etc/letsencrypt/live/www.$domain/fullchain.pem"
-private_key="/etc/letsencrypt/live/www.$domain/privkey.pem"
+public_cert="/etc/letsencrypt/live/$domain/fullchain.pem"
+private_key="/etc/letsencrypt/live/$domain/privkey.pem"
+
+public_cert_www="/etc/letsencrypt/live/www.$domain/fullchain.pem"
+private_key_www="/etc/letsencrypt/live/www.$domain/privkey.pem"
 
 config="/etc/nginx/sites-available/$domain.conf"
 temp_config="/etc/nginx/sites-available/$domain.conf.tmp"
@@ -62,6 +65,12 @@ sed "s|{PUBLIC.CERT}|$public_cert|g" $config > $temp_config
 mv $temp_config $config
 
 sed "s|{PRIVATE.KEY}|$private_key|g" $config > $temp_config
+mv $temp_config $config
+
+sed "s|{WWW.PUBLIC.CERT}|$public_cert_www|g" $config > $temp_config
+mv $temp_config $config
+
+sed "s|{WWW.PRIVATE.KEY}|$private_key_www|g" $config > $temp_config
 mv $temp_config $config
 
 sudo service nginx restart
