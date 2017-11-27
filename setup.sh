@@ -70,16 +70,15 @@ printf "$start \n $stop \n $restart \n $status \n $test \n" >> .bashrc
 source ~/.bashrc
 
 # Update all final permissions before restart
-chown -R $USER:www-data /var/log/
-chown -R $USER:www-data /var/www/
-chown -R $USER:www-data /etc/nginx/
-chown -R $USER:www-data /etc/php/
-chown -R $USER:www-data /etc/logrotate.d/
+sudo chown -R $USER:www-data /var/log/
+sudo chown -R $USER:www-data /var/www/
+sudo chown -R $USER:www-data /etc/nginx/
+sudo chown -R $USER:www-data /etc/php/
+sudo chown -R $USER:www-data /etc/logrotate.d/
 
 printf "[LEMP Config] Checking configuration and restarting services \n"
 sudo nginx -t
 sudo service nginx restart
-sudo service php7.0-fpm restarts
+sudo service php7.0-fpm restart
 
-printf "To initialize a site run the creator script. \n"
-printf "- - - - - - LEMP Configuration Complete - - - - - - \n"
+printf "[LEMP Configuration Complete] To initialize a site run the creator script. \n"
