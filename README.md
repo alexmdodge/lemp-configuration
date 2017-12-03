@@ -9,14 +9,14 @@ First spin up a server instance however you like. You will need access to the
 command line. Some shared services do not allow this which is why AWS and Digital Ocean are convenient. SSH into the server then ensure you have `wget` installed,
 
 ```sh
-wget https://github.com/alexmdodge/lemp-configuration/raw/master/lemp-configuration.tar.gz
+wget https://github.com/alexmdodge/lemp-configuration/archive/v1.0.0.tar.gz
 tar -xzf lemp-configuration.tar.gz
 ```
 
 This will download and unpack the tar file which contains all of the tooling.
 
-If you would like to edit and re-pack the configuration, or if you're contributing
-you can use,
+If you have made edits and would like to re-pack the configuration for ease of moving
+between servers and workstations (without git dependency) run,
 
 ```sh
 ./build.sh
