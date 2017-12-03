@@ -48,7 +48,8 @@ if [ $is_subdomain ]
 then
     sudo certbot certonly --webroot -w $domain_root -d $domain
 else
-    sudo certbot certonly --webroot -w $domain_root -d $domain -d www.$domain
+    sudo certbot certonly --webroot -w $domain_root -d $domain
+    sudo certbot certonly --webroot -w $domain_root -d www.$domain
 fi
 
 # Replace the current domains config certs with the newly generated ones
