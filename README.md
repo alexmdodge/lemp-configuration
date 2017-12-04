@@ -9,7 +9,7 @@ First spin up a server instance however you like. You will need access to the
 command line. Some shared services do not allow this which is why AWS and Digital Ocean are convenient. SSH into the server then ensure you have `wget` installed,
 
 ```sh
-wget https://github.com/alexmdodge/lemp-configuration/archive/v1.0.2.tar.gz
+wget https://github.com/alexmdodge/lemp-configuration/archive/v1.0.3.tar.gz
 tar -xzf lemp-configuration.tar.gz
 ```
 
