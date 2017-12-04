@@ -56,7 +56,7 @@
             - LEMP Webserver -
         </h1>
         <a href="https://github.com/alexmdodge/lemp-configuration" class="contribute">
-            Help make this configuration better!
+            Your site is configured and ready to go!
         </a>
     </div>
     <?php phpinfo(); ?>

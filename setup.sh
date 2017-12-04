@@ -38,7 +38,6 @@ printf "[LEMP Config] Copying base configuration files \n"
 sudo cp -R $nginx_config /etc
 sudo cp -R $php_config /etc
 sudo rm -R /var/www/html
-sudo cp $index_template /var/www
 
 # Configure initial directories for logging
 sudo mkdir /var/log/php-fpm
