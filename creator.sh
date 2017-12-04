@@ -41,23 +41,23 @@ then
 
     # Change the full path domain name settings
     sed "s/{DOMAIN.COM}/$domain/g" templates/domain.conf > $domain.conf.tmp
-    mv $domain.conf.tmp $domain.conf
+    sudo mv $domain.conf.tmp $domain.conf
 
     # Change the partial domain settings (mostly log files)
     sed "s/{DOMAIN}/$name/g" $domain.conf > $domain.conf.tmp
-    mv $domain.conf.tmp $domain.conf
+    sudo mv $domain.conf.tmp $domain.conf
 
     # Move the conf file to the desired location
-    mv $domain.conf $sites_available
-    cp $sites_available/$domain.conf $sites_available/$domain.conf-copy
+    sudo mv $domain.conf $sites_available
+    sudo cp $sites_available/$domain.conf $sites_available/.$domain.conf-copy
 
     # Also create site folder in root directory with test page
-    mkdir -p /var/www/$domain
-    cp templates/index.php /var/www/$domain
+    sudo mkdir -p /var/www/$domain
+    sudo cp templates/index.php /var/www/$domain
 
     # Enable the site by linking it to the enabled folder
     cd $sites_enabled
-    ln -s ../$sites_available/$domain.conf .
+    sudo ln -s ../$sites_available/$domain.conf .
 
     exit
 fi
