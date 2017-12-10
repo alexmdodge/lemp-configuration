@@ -21,20 +21,46 @@ then
     exit
 fi
 
+sudo service nginx stop
+sudo service php7.0-fpm stop
+
 # Replace the current domains config certs with the newly generated ones
 public_cert="/etc/letsencrypt/live/$domain/fullchain.pem"
 private_key="/etc/letsencrypt/live/$domain/privkey.pem"
 
-config="/etc/nginx/sites-available/$domain.conf"
-temp_config="/etc/nginx/sites-available/$domain.conf.tmp"
+# Common file locations
+sites_available="/etc/nginx/sites-available"
+sites_enabled="/etc/nginx/sites-enabled"
 
-sudo certbot certonly --webroot -w $domain_root -d $domain
+# Simplify template naming
+template="templates/domain.secure.conf"
+temp_conf="$domain.conf.tmp"
+conf="$domain.conf"
 
-sed "s|{PUBLIC.CERT}|$public_cert|g" $config > $temp_config
-mv $temp_config $config
+sudo certbot --nginx
 
-sed "s|{PRIVATE.KEY}|$private_key|g" $config > $temp_config
-mv $temp_config $config
+# Setup public and private ssl certs in new configuration
+sed "s|{PUBLIC.CERT}|$public_cert|g" $template > $temp_conf
+sudo mv $temp_conf $conf
+
+sed "s|{PRIVATE.KEY}|$private_key|g" $conf > $temp_conf
+sudo mv $temp_conf $conf
+
+# Change the full path domain name settings
+sed "s/{DOMAIN.COM}/$domain/g" $conf > $temp_conf
+sudo mv $temp_conf $conf
+
+# Change the partial domain settings (mostly log files)
+sed "s/{DOMAIN}/$name/g" $conf > $temp_conf
+sudo mv $temp_conf $conf
+
+# Move the conf file to the desired location
+sudo rm $sites_available/$conf
+sudo rm $sites_available/.$conf-copy
+
+sudo mv $conf $sites_available
+sudo cp $sites_available/$conf $sites_available/.$conf-copy
+sudo cp $sites_available/$conf $sites_enabled/$conf
 
 sudo service nginx restart
 sudo service php7.0-fpm restart

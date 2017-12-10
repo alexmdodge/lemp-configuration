@@ -48,10 +48,10 @@ sudo cp $logrotate_config /etc/logrotate.d/php7.0-fpm
 
 printf "[LEMP Config] Installing letsencrypt \n"
 sudo apt-get update
-sudo apt-get install software-properties-common
+sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
-sudo apt-get install python-certbot-nginx
+sudo apt-get install python-certbot-nginx -y
 
 # Change directories and setup some convenience variables
 cd ~

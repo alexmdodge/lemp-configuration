@@ -56,10 +56,10 @@ then
     sudo cp templates/index.php /var/www/$domain
 
     # Enable the site by linking it to the enabled folder
-    cd $sites_enabled
-    sudo ln -s ../$sites_available/$domain.conf .
+    sudo cp $sites_available/$domain.conf $sites_enabled/$domain.conf
 
     exit
+
 fi
 
 echo "Error: Please run script again and input correct name."
