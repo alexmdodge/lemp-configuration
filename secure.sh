@@ -12,10 +12,11 @@
 printf "Enter the full domain of your new site: \n"
 read -e domain
 
-domain_root="/var/www/$domain"
+# Match from the front with % and the back with #
+name=$(echo $domain | rev | cut -d"." -f2-  | rev)
 
 # Check if domain exists and then build cert
-if [ ! -d "$domain_root" ]
+if [ ! -d "/var/www/$domain" ]
 then
 	printf "$domain directory not found, please try again.\n"
     exit
@@ -62,5 +63,5 @@ sudo mv $conf $sites_available
 sudo cp $sites_available/$conf $sites_available/.$conf-copy
 sudo cp $sites_available/$conf $sites_enabled/$conf
 
-sudo service nginx restart
-sudo service php7.0-fpm restart
+sudo service nginx start
+sudo service php7.0-fpm start
