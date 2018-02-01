@@ -22,8 +22,8 @@ then
     exit
 fi
 
-sudo service nginx stop
-sudo service php7.0-fpm stop
+sudo systemctl stop nginx
+sudo systemctl stop php7.0-fpm
 
 # Replace the current domains config certs with the newly generated ones
 public_cert="/etc/letsencrypt/live/$domain/fullchain.pem"
@@ -38,7 +38,7 @@ template="templates/domain.secure.conf"
 temp_conf="$domain.conf.tmp"
 conf="$domain.conf"
 
-sudo certbot --nginx
+sudo ./certbot-auto --nginx
 
 # Setup public and private ssl certs in new configuration
 sed "s|{PUBLIC.CERT}|$public_cert|g" $template > $temp_conf
@@ -63,5 +63,5 @@ sudo mv $conf $sites_available
 sudo cp $sites_available/$conf $sites_available/.$conf-copy
 sudo cp $sites_available/$conf $sites_enabled/$conf
 
-sudo service nginx start
-sudo service php7.0-fpm start
+sudo systemctl restart nginx
+sudo systemctl restart php7.0-fpm

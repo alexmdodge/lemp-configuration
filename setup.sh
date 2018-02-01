@@ -48,10 +48,8 @@ sudo cp $logrotate_config /etc/logrotate.d/php7.0-fpm
 
 printf "[LEMP Config] Installing letsencrypt \n"
 sudo apt-get update
-sudo apt-get install software-properties-common -y
-sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
-sudo apt-get install python-certbot-nginx -y
+wget https://dl.eff.org/certbot-auto
+chmod a+x ./certbot-auto
 
 # Change directories and setup some convenience variables
 cd ~
@@ -64,8 +62,9 @@ stop="alias lemp-stop=\"$prefix nginx stop && $prefix $php stop\""
 restart="alias lemp-restart=\"$prefix nginx restart && $prefix $php restart\""
 status="alias lemp-status=\"$prefix nginx status && $prefix $php status\""
 test="alias lemp-test=\"sudo nginx -t\""
+clear="alias lemp-clear-ports=\"sudo fuser -k 80/tcp && sudo fuser -k 443/tcp\""
 
-printf "$start \n $stop \n $restart \n $status \n $test \n" >> .bashrc
+printf "$start \n $stop \n $restart \n $status \n $test \n $clear \n" >> .bashrc
 source ~/.bashrc
 
 # Update all final permissions before restart
@@ -77,7 +76,7 @@ sudo chown -R $USER:www-data /etc/logrotate.d/
 
 printf "[LEMP Config] Checking configuration and restarting services \n"
 sudo nginx -t
-sudo service nginx restart
-sudo service php7.0-fpm restart
+sudo systemctl restart nginx
+sudo systemctl restart php7.0-fpm
 
 printf "[LEMP Configuration Complete] To initialize a site run the creator script. \n"

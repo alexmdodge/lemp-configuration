@@ -58,6 +58,9 @@ then
     # Enable the site by linking it to the enabled folder
     sudo cp $sites_available/$domain.conf $sites_enabled/$domain.conf
 
+    sudo systemctl restart nginx
+    sudo systemctl restart php7.0-fpm
+
     exit
 
 fi
